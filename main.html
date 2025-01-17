@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="media/favicon.ico" type="image/x-icon"/>
+    <title>Moore's Laptop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('media/background_az.jpg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-system {
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            position: absolute;
+            top: 20%;
+            left: 50px;
+            transform: translateY(-50%);
+        }
+
+        .header {
+            background-color: #0078d7;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .file-list {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .file-list li {
+            padding: 10px;
+            border-bottom: 1px solid #cccccc;
+            cursor: pointer;
+        }
+
+        .file-list li:last-child {
+            border-bottom: none;
+        }
+
+        .file-list li:hover {
+            background-color: #f5f5f5;
+        }
+
+        .file-list li a {
+            text-decoration: none;
+            color: #333333;
+            display: block;
+        }
+
+        .file-list li a:hover {
+            color: #0078d7;
+        }
+
+        .task-bar {
+            background-color: #0078d7;
+            height: 40px;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            color: white;
+            font-size: 14px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .task-bar .start-button {
+            background-color: #005a9e;
+            padding: 5px 15px;
+            margin: 0 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .task-bar .start-button:hover {
+            background-color: #004a82;
+        }
+
+        .task-bar .time {
+            margin-left: auto;
+            padding-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="file-system">
+        <div class="header">File Directory</div>
+        <ul class="file-list" id="fileList">
+            <li>Hohokam Research</li>
+            <li><a href="#" data-link="files/saguaro_site.html"> &#8594 Hohokam Saguaro Site.txt</a></li>
+            <li><a href="#" data-link="files/ancient_race.html"> &#8594 Ancient Race.txt</a></li>
+            <li><a href="#" data-link="files/last_civilization.html"> &#8594 Last Civilization.txt</a></li>
+            <li>Underearth</li>
+            <li><a href="#" data-link="files/blue.html"> &#8594 Blue.txt</a></li>
+            <li><a href="#" data-link="files/fire.html"> &#8594 Fire.txt</a></li>
+            <li><a href="#" data-link="files/eldorado.html"> &#8594 Gold.txt</a></li>
+        </ul>
+    </div>
+
+    <div class="task-bar">
+        <div class="start-button">Start</div>
+        <div class="time" id="currentTime">12:00 PM</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileList = document.getElementById('fileList');
+
+            fileList.addEventListener('click', (event) => {
+                event.preventDefault();
+                const target = event.target;
+
+                if (target.tagName === 'A') {
+                    const link = target.getAttribute('data-link');
+                    if (link) {
+                        window.open(link, '_blank');
+                    }
+                }
+            });
+
+            const updateTime = () => {
+                const now = new Date();
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                const isPM = hours >= 12;
+                const formattedHours = hours % 12 || 12;
+                const formattedMinutes = minutes.toString().padStart(2, '0');
+                const timeString = `${formattedHours}:${formattedMinutes} ${isPM ? 'PM' : 'AM'}`;
+                document.getElementById('currentTime').textContent = timeString;
+            };
+
+            updateTime();
+            setInterval(updateTime, 60000);
+        });
+    </script>
+</body>
+</html>
