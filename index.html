@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="media/favicon.ico" type="image/x-icon"/>
-    <title>Moore's Laptop</title>
+    <title>Thomas Moore's Laptop</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -131,7 +131,6 @@
             height: auto;
             z-index: 1;
             pointer-events: none;
-            animation: float 3s ease-in-out infinite;
         }
 
         .hasty-bg {
@@ -146,10 +145,10 @@
 
         .text-bubble {
             position: absolute;
-            bottom: 20%;
-            left: 7%;
+            bottom: 35%;
+            right: 3%;
             width: 180px;
-            background: white;
+            background: rgb(255, 255, 255);
             color: black;
             padding: 10px;
             border-radius: 10px;
@@ -157,9 +156,10 @@
             font-family: Arial, sans-serif;
             text-align: center;
             box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-            display: none; /* Hidden initially */
+            display: none;
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
+            animation: float 3s ease-in-out infinite;
         }
 
         .text-bubble::after {
@@ -253,7 +253,7 @@
         <p>HAWKINS WAVEBREAK BIOS</p>
         <p>...Initializing Firmware...</p>
         <p>...Loading WAVEBREAK OS...</p>
-        <p>Welcome "Moore, Thomas"</p>
+        <p>Welcome MOORE, THOMAS.</p>
         <p>‎</p>
         <p class="final-text">\ Press Any Key /</p>
     </div>
@@ -307,7 +307,7 @@
     <img src="media/sticky_note.png" alt="Sticky Note" class="sticky-note-bg">
 
     <img src="media/hasty.png" alt="Virtual Helper" id="hasty" class="hasty-bg">
-    <div id="text-bubble" class="text-bubble">Hello there!</div>
+    <div id="text-bubble" class="text-bubble">Click Me For Assistance <3</div>
 
     <div id="popup" class="popup">
         <span class="close-btn" onclick="closePopup()">&times;</span>
@@ -344,7 +344,7 @@
                 return text.split("\n").map(line => line.trim()).filter(line => line);
             } catch (error) {
                 console.error("Error loading text file:", error);
-                return ["ERR: Who has my lines?"]; // Default message if file fails to load
+                return ["ERROR: Lines, please?"]; // Default message if file fails to load
             }
         }
 
