@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('media/background_az.jpg'); /* Replace with your image URL */
+            background-image: url('media/background_az.jpg');
             background-size: cover;
             background-position: center;
             margin: 0;
@@ -18,59 +18,29 @@
             flex-direction: column;
         }
 
-        .file-system {
-            background-color: #ffffff;
-            border: 1px solid #cccccc;
-            width: 300px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
+        .desktop-icons {
             position: absolute;
-            top: 20%;
-            left: 50px;
-            transform: translateY(-50%);
+            top: 50px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .header {
-            background-color: #0078d7;
-            color: white;
-            padding: 10px;
-            font-weight: bold;
+        .icon {
+            width: 50px;
             text-align: center;
-        }
-
-        .file-list {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .file-list li {
-            padding: 10px;
-            border-bottom: 1px solid #cccccc;
+            text-wrap: balance;
             cursor: pointer;
         }
 
-        .file-list li:last-child {
-            border-bottom: none;
-        }
-
-        .file-list li:hover {
-            background-color: #f5f5f5;
-        }
-
-        .file-list li a {
-            text-decoration: none;
-            color: #333333;
-            display: block;
-        }
-
-        .file-list li a:hover {
-            color: #0078d7;
+        .icon img {
+            width: 50px;
+            height: 50px;
         }
 
         .task-bar {
-            background-color: #0078d7;
+            background-color: #850d0d;
             height: 40px;
             width: 100%;
             position: absolute;
@@ -78,7 +48,7 @@
             left: 0;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             color: white;
             font-size: 14px;
             box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
@@ -97,48 +67,306 @@
             background-color: #004a82;
         }
 
+        .task-bar .icons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        .task-bar .icon img {
+            width: 30px;
+            height: 30px;
+        }
+
         .task-bar .time {
             margin-left: auto;
             padding-right: 15px;
         }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            height: 70%;
+            background: rgba(0, 50, 100, 0.8);
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            color: white;
+            overflow: auto;
+            backdrop-filter: blur(8px);
+            animation: popupFadeIn 0.3s ease-out;
+        }
+
+        .popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            background: white;
+            color: black;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            text-align: center;
+            line-height: 25px;
+        }
+
+        .popup iframe {
+            width: 100%;
+            height: 90%;
+            border: none;
+        }
+
+        .sticky-note-bg {
+            position: absolute;
+            top: 5%;
+            right: 5%;
+            width: 250px;
+            height: auto;
+            z-index: 1;
+            pointer-events: none;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hasty-bg {
+            position: absolute;
+            bottom: 15%;
+            right: 5%;
+            width: 250px;
+            height: auto;
+            cursor: pointer;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .text-bubble {
+            position: absolute;
+            bottom: 20%;
+            left: 7%;
+            width: 180px;
+            background: white;
+            color: black;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+            display: none; /* Hidden initially */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .text-bubble::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 20%;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+
+        .start-button:active {
+            transform: scale(0.95);
+            transition: transform 0.1s ease-in-out;
+        }
+
+        .icon:hover {
+            animation: iconBounce 0.3s ease-in-out;
+        }
+
+        #boot-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgb(3, 2, 51);
+            color: rgb(255, 255, 255);
+            font-family: 'Courier New', monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            z-index: 100;
+        }
+
+        .boot-text p {
+            opacity: 0;
+            font-size: 20px;
+            animation: textFade 3s ease-in-out forwards;
+            text-align: center;
+        }
+
+        .boot-text .final-text {
+            animation: textBlink 1s infinite alternate 5s;
+        }
+
+        @keyframes textFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes textBlink {
+            0% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+
+        @keyframes popupFadeIn {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        @keyframes iconBounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(5px); }
+            100% { transform: translateY(0px); }
+        }
+
     </style>
 </head>
+
+<div id="boot-screen">
+    <div class="boot-text">  
+        <img src="media/h.png" alt="HAWKINS TECHNOLOGIES" style="width:51px;height:51px;">
+        <p>HAWKINS WAVEBREAK BIOS</p>
+        <p>...Initializing Firmware...</p>
+        <p>...Loading WAVEBREAK OS...</p>
+        <p>Welcome "Moore, Thomas"</p>
+        <p>‎</p>
+        <p class="final-text">\ Press Any Key /</p>
+    </div>
+</div>
+
 <body>
-    <div class="file-system">
-        <div class="header">File Directory</div>
-        <ul class="file-list" id="fileList">
-            <li>Hohokam Research</li>
-            <li><a href="#" data-link="files/saguaro_site.html"> &#8594 Hohokam Saguaro Site.txt</a></li>
-            <li><a href="#" data-link="files/ancient_race.html"> &#8594 Ancient Race.txt</a></li>
-            <li><a href="#" data-link="files/last_civilization.html"> &#8594 Last Civilization.txt</a></li>
-            <li>Underearth</li>
-            <li><a href="#" data-link="files/blue.html"> &#8594 Blue.txt</a></li>
-            <li><a href="#" data-link="files/fire.html"> &#8594 Fire.txt</a></li>
-            <li><a href="#" data-link="files/eldorado.html"> &#8594 Gold.txt</a></li>
-        </ul>
+
+    <div class="desktop-icons">
+        <div class="icon" onclick="openPopup('files/saguaro_site.html')">
+            <img src="media/folder.png" alt="Folder">
+            <div><b>Saguar<br>o Site</b></div>
+        </div>
+        <div class="icon" onclick="openPopup('files/last_race.html')">
+            <img src="media/folder.png" alt="Folder">
+            <div><b>Last Race</b></div>
+        </div>
+        <div class="icon" onclick="openPopup('files/agartha.html')">
+            <img src="media/folder.png" alt="Folder">
+            <div><b>Agarth<br>a</b></div>
+        </div>
+        <div class="icon" onclick="window.open('https://www.youtube.com/watch?v=gbaE1k05RXs', '_blank')">
+            <img src="media/explorer.png" alt="Explorer">
+            <div><b>RED<br>VOICE</b></div>
+        </div>
     </div>
 
     <div class="task-bar">
-        <div class="start-button">Start</div>
+        
+        <div class="start-button" onclick="playSoundAndShowImage()">Sleep</div>
+
+        <div class="icons">
+            <div class="icon" onclick="window.open('https://google.com', '_blank')">
+                <img src="media/explorer.png" alt="Explorer">
+            </div>
+            <div class="icon" onclick="window.open('https://youtube.com', '_blank')">
+                <img src="media/youtube.png" alt="Youtube">
+            </div>
+            <div class="icon" onclick="window.open('https://docs.google.com', '_blank')">
+                <img src="media/word.png" alt="Docs">
+            </div>
+            <div class="icon" onclick="window.open('https://open.spotify.com', '_blank')">
+                <img src="media/spotify.png" alt="Music">
+            </div>
+            <div class="icon" onclick="window.open('https://store.steampowered.com/', '_blank')">
+                <img src="media/social.png" alt="Games">
+            </div>
+        </div>
         <div class="time" id="currentTime">12:00 PM</div>
     </div>
 
+    <img src="media/sticky_note.png" alt="Sticky Note" class="sticky-note-bg">
+
+    <img src="media/hasty.png" alt="Virtual Helper" id="hasty" class="hasty-bg">
+    <div id="text-bubble" class="text-bubble">Hello there!</div>
+
+    <div id="popup" class="popup">
+        <span class="close-btn" onclick="closePopup()">&times;</span>
+        <iframe id="popup-iframe" src=""></iframe>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const fileList = document.getElementById('fileList');
 
-            fileList.addEventListener('click', (event) => {
-                event.preventDefault();
-                const target = event.target;
+        document.addEventListener("DOMContentLoaded", () => {
+            const textBubble = document.getElementById("text-bubble");
+            const hasty = document.getElementById("hasty");
 
-                if (target.tagName === 'A') {
-                    const link = target.getAttribute('data-link');
-                    if (link) {
-                        window.open(link, '_blank');
-                    }
+            // Show text bubble on page load
+            setTimeout(() => {
+                textBubble.style.display = "block";
+                textBubble.style.opacity = "1";
+            }, 1000); // 1-second delay after load
+
+            // Click event to load random text
+            hasty.addEventListener("click", async () => {
+                const messages = await fetchTextFile("media/hasty_quotes.txt");
+                if (messages.length > 0) {
+                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                    textBubble.innerText = randomMessage;
                 }
             });
+        });
 
+        // Function to fetch the text file and return an array of lines
+        async function fetchTextFile(url) {
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+                return text.split("\n").map(line => line.trim()).filter(line => line);
+            } catch (error) {
+                console.error("Error loading text file:", error);
+                return ["ERR: Who has my lines?"]; // Default message if file fails to load
+            }
+        }
+
+        function playSoundAndShowImage() {
+        let audio = new Audio('media/turret.mp3');
+        audio.volume = 0.01;
+        audio.play();
+        document.getElementById('popup-iframe').src = 'media/turret.png';
+        document.getElementById('popup').style.display = 'block';
+        }
+
+        function openPopup(file) {
+            document.getElementById('popup-iframe').src = file;
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('popup-iframe').src = "";
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
             const updateTime = () => {
                 const now = new Date();
                 const hours = now.getHours();
@@ -152,7 +380,23 @@
 
             updateTime();
             setInterval(updateTime, 60000);
-        });
+            });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(removeBootScreen, 30000);
+            document.addEventListener("keydown", removeBootScreen);
+            });
+
+        function removeBootScreen() {
+            const bootScreen = document.getElementById("boot-screen");
+            bootScreen.style.transition = "opacity 1s ease-out";
+            bootScreen.style.opacity = "0";
+
+        setTimeout(() => {
+            bootScreen.style.display = "none";
+        }, 1000);
+}
+
     </script>
 </body>
 </html>
